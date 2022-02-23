@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
-import ContactFilter from './ContactFilter/ContactFilter';
+import Filter from './ContactFilter/ContactFilter';
 import { v4 as uuid } from 'uuid';
-import Container from './Container/Container';
+import Section from './Container/Container';
 
 class App extends Component {
   state = {
@@ -12,15 +12,16 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const contacts = localStorage.getItem('contats');
+    const contacts = localStorage.getItem('contacts');
     contacts && this.setState({ contacts: JSON.parse(contacts) });
   }
 
-  componentDidUpdate(preProps, prevState) {
-    if (prevState.contats !== this.state.contacts) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
+
   addContact = contact => {
     const id = uuid();
     const { name } = contact;
@@ -54,14 +55,14 @@ class App extends Component {
   render() {
     return (
       <>
-        <Container title="Phonebook">
+        <Section title="Phonebook">
           <ContactForm onSubmit={this.addContact} />
-        </Container>
-        <Container title="Contacts">
-          <ContactFilter onChange={this.onFilterChange} />
+        </Section>
+        <Section title="Contacts">
+          <Filter onChange={this.onFilterChange} />
 
           <ContactList onDelete={this.deleteItem} items={this.getFilteredContacts()} />
-        </Container>
+        </Section>
       </>
     );
   }
